@@ -16,17 +16,25 @@ class Pixel
 	int x;
 	int y;
 	friend class Polygon;	
+	public:
+		void operator = (Pixel& temp)
+		{
+			x=temp.x;
+			y=temp.y;
+		}
 };
 class Polygon
 {
 	Pixel* p;
 	int noOfVertices;
+	float* slope;
 	int Xmax,Xmin,Ymax,Ymin;
 	public:
 		Polygon(int n)
 		{
 			noOfVertices=n;
-			p=new Pixel[noOfVertices]; 
+			p=new Pixel[noOfVertices];
+			slope=new float [noOfVertices]; 
 			Xmax=Ymax=0;
 		}
 		void read()
@@ -50,6 +58,16 @@ class Polygon
 					line(p[i].x,p[i].y,p[i+1].x,p[i+1].y);
 			}
 		}
+		void calculateSlope()
+		{
+			for(int i=0;i<noOfVertices;i++)
+			{
+				if(i+1==noOfVertices)
+					slope[i]=(float)(p[i].y-p[0].y)/(p[i].x-p[0].x);	
+				else
+					slope[i]=(float)(p[i].y-p[i+1].y)/(p[i].x-p[i+1].x);	
+			}
+		}
 		void getMaxAndMin()
 		{
 			Xmin=p[0].x;
@@ -67,6 +85,29 @@ class Polygon
 			}
 			cout<<"\nXmax :"<<Xmax<<"\nXmin :"<<Xmin<<"\nYmax :"<<Ymax<<"\nYmin :"<<Ymin<<endl;
 		}
+		void sort()
+		{
+			for(int i=0;i<noOfVertices-1;i++
+			{
+				for(int j=0;j<noOfVertices;j++)
+				{
+					if(p[i].y>p[i+1].y)
+					{
+						Pixel temp;
+						temp=p[i];
+						p[i]=p[i+1];
+						p[i+1]=temp;
+						
+						float t;
+						t=slope[i];
+						slope[i]=slope[i+1];
+						slope[i+1]=t;
+					}
+				}
+			}
+		}
+		
+		void scanLine(){}
 };
 int main()
 {
@@ -86,4 +127,3 @@ int main()
 	closegraph();
 	return 0;
 }
-
